@@ -1,0 +1,8 @@
+*.pyc
+*/__pycache__
+*/pytest_pycache
+*.db
+*.hypothesis/
+SECRET_KEY.txt
+.venv/
+.idea/
