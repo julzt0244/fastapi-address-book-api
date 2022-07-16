@@ -25,7 +25,7 @@ Password: password2021
 ## Requirements
 - Docker Desktop
 - Python 3.9 and above
-- "poetry" python library installed
+- "poetry" Python library installed
 
 ## Dev Environment - Localhost
 
