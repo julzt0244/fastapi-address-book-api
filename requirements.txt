@@ -5,3 +5,4 @@ pyhumps
 passlib[bcrypt]
 python-jose
 sqlalchemy
+requests
