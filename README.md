@@ -2,7 +2,7 @@
 
 A simple Address Book API implemented in FastAPI together with SQLAlchemy, with most relevant tests being done using Pytest.
 
-The API is secured via a reasonably secure JWT implementation using HS256. As such, most endpoints below require authentication before use. Each request to an authenticated endpoint requires a "Authorization": "Bearer XXX" where XXX is the access token provided by the "/account/session/" endpoint upon successful login.
+The API is secured via a reasonably secure JWT implementation using HS256. As such, most endpoints require authentication before use. Each request to an authenticated endpoint requires a "Authorization": "Bearer XXX" where XXX is the access token provided by the "/account/session/" endpoint upon successful login.
 
 API features implemented:
 - Each address book holds the name and phone numbers of contacts entries
