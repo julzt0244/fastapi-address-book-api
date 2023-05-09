@@ -19,6 +19,7 @@ class RouteErrorHandler(APIRoute):
             except Exception as ex:
                 if isinstance(ex, HTTPException):
                     raise ex
+                # Demonstrating mapping a custom exception to a HTTPException
                 elif isinstance(ex, MyCustomException):
                     raise HTTPException(status_code=444, detail=str(ex))
                 print("uncaught error")

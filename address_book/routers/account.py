@@ -1,6 +1,5 @@
 from datetime import timedelta
 from typing import cast
-import random
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
@@ -8,7 +7,6 @@ from sqlalchemy.orm import Session
 
 from address_book import auth, crud, database, models, schemas
 from address_book.exception_handler import RouteErrorHandler
-from address_book.exceptions import MyCustomException
 
 router = APIRouter(
     prefix="/account",
@@ -25,9 +23,6 @@ def get_user_account_info(current_user: models.User = Depends(auth.get_current_u
 @router.post("/", response_model=schemas.User)
 def create_user(new_user: schemas.UserCreate, db: Session = Depends(database.get_db)):
     db_user = crud.get_user(db, new_user.username.casefold())
-    # Demonstrating a randomly raised custom exception that is handled by the exception_handler.py
-    if random.randint(1, 3) == 1:
-        raise MyCustomException("MEOW")
     if db_user:
         raise HTTPException(status_code=409, detail="That username is already taken")
     return crud.create_user(db, new_user)
