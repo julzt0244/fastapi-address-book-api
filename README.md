@@ -42,6 +42,9 @@ Password: password2021
 ## Deployment - Docker
 
 - Open a CMD/command line and navigate/cd to the root directory,
-- Run this command: ```docker build -t addressbook .```
-- Run this command: ```docker run -p 80:80 addressbook```
-- Open this address in your web browser "localhost" or "127.0.0.1"
+- Run these commands one by one: 
+```
+docker build -t addressbook .
+docker run -it --name addressbook --rm -p 3456:80 addressbook
+```
+- Open this address in your web browser "localhost:3456" or "127.0.0.1:3456"
