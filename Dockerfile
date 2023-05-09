@@ -1,9 +1,9 @@
 FROM python:3.9-slim
 
-RUN apt update && apt upgrade -y
+RUN apt-get update && apt-get upgrade -y
 
 # Install python and libs
-RUN apt install -y -q git
+RUN apt-get install -y -q git
 RUN pip3 install gunicorn uvloop httptools
 
 # Pull from git and install reqs
