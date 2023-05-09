@@ -39,7 +39,7 @@ Password: password2021
 - Open a CMD/command line and navigate/cd to the root directory on your dev machine. The below assumes you are running a Windows computer and have the "poetry" library installed:
 - Run this command: ```poetry install && poetry run pytest```
 
-## Deployment - Simply Dockerfile
+## Deployment - Simple Dockerfile
 
 - Open a CMD/command line and navigate/cd to the root directory,
 - Run these commands one by one: 
