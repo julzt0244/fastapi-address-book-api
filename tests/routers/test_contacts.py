@@ -138,7 +138,7 @@ class TestContacts:
             headers=get_authed_user_headers,
         )
         assert response.status_code == 204
-        assert response.json() == None
+        assert response.content.decode() == ""
 
     def test_delete_contact_invalid_details_should_fail(self, test_client, get_authed_user_headers):
 

@@ -6,17 +6,17 @@ authors = ["Julian Tan <julian.tanz@yahoo.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-fastapi = "^0.68.2"
-uvicorn = "^0.15.0"
-python-multipart = "^0.0.5"
+fastapi = "^0.95.1"
+uvicorn = "^0.22.0"
+python-multipart = "^0.0.6"
 pyhumps = "^3.8.0"
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-jose = "^3.3.0"
 SQLAlchemy = "1.4.45"  # Patch versions higher than this will complain about SQLAlchemy 2.0 deprecations
-requests = "2.29.0"  # Minor versions higher than this will cause a test to fail
+httpx = "^0.24.0"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^6.2.5"
+pytest = "^7.3.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
