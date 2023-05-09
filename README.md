@@ -32,19 +32,19 @@ Password: password2021
 ## Dev Environment - Localhost
 
 - Open a CMD/command line and navigate/cd to the root directory on your dev machine. The below assumes you are running a Windows computer and have the "poetry" library installed:
-- Run this command: ```poetry install && poetry run uvicorn address_book.main:app --port 80 --reload```
+- Run this command: ```poetry install && poetry run uvicorn address_book.main:app --port 88 --reload```
 
 ## Tests
 
 - Open a CMD/command line and navigate/cd to the root directory on your dev machine. The below assumes you are running a Windows computer and have the "poetry" library installed:
 - Run this command: ```poetry install && poetry run pytest```
 
-## Deployment - Docker
+## Deployment - Simply Dockerfile
 
 - Open a CMD/command line and navigate/cd to the root directory,
 - Run these commands one by one: 
 ```
 docker build -t addressbook .
-docker run -it --name addressbook --rm -p 88:80 addressbook
+docker run -it --name addressbook -p 88:80 addressbook
 ```
 - Open this address in your web browser "localhost:88" or "127.0.0.1:88"
