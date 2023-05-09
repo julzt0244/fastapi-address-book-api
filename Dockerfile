@@ -10,7 +10,7 @@ RUN pip install gunicorn uvloop httptools
 RUN pip install poetry==1.4.2
 RUN export PATH="$HOME/.local/bin:$PATH"
 
-# Pull from git and install reqs
+# Pull from git and install reqs to system Python
 RUN git clone https://github.com/julzt0244/fastapi-address-book-api.git /app
 WORKDIR /app
 RUN poetry config virtualenvs.create false && poetry install --no-interaction --no-ansi --no-dev

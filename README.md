@@ -45,6 +45,6 @@ Password: password2021
 - Run these commands one by one: 
 ```
 docker build -t addressbook .
-docker run -it --name addressbook --rm -p 3456:80 addressbook
+docker run -it --name addressbook --rm -p 88:80 addressbook
 ```
-- Open this address in your web browser "localhost:3456" or "127.0.0.1:3456"
+- Open this address in your web browser "localhost:88" or "127.0.0.1:88"
