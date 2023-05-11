@@ -1,6 +1,7 @@
 from enum import Enum, auto
 
 from sqlalchemy import create_engine
+from sqlalchemy.engine.base import Engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -10,7 +11,9 @@ class DatabaseEnv(Enum):
     Test = auto()
 
 
-def create_db_engine_and_session(database_mode: DatabaseEnv = DatabaseEnv.Prod):
+def create_db_engine_and_session(
+    database_mode: DatabaseEnv = DatabaseEnv.Prod,
+) -> tuple[Engine, sessionmaker]:
     if database_mode is DatabaseEnv.Prod:
         db_name = "AddressBookDB"
     else:
@@ -18,11 +21,13 @@ def create_db_engine_and_session(database_mode: DatabaseEnv = DatabaseEnv.Prod):
 
     SQLALCHEMY_DATABASE_URL = f"sqlite:///./{db_name}.db"
 
-    engine = create_engine(
+    engine: Engine = create_engine(
         SQLALCHEMY_DATABASE_URL,
         connect_args={"check_same_thread": False},
     )
-    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    SessionLocal: sessionmaker = sessionmaker(
+        autocommit=False, autoflush=False, bind=engine
+    )
 
     return engine, SessionLocal
 

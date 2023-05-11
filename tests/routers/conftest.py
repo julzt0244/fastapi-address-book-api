@@ -1,5 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
+from sqlalchemy.engine.base import Engine
+from sqlalchemy.orm import sessionmaker
 
 from address_book.database import (
     Base,
@@ -11,7 +13,7 @@ from address_book.main import app
 
 
 @pytest.fixture(scope="module")
-def test_engine_and_db():
+def test_engine_and_db() -> tuple[Engine, sessionmaker]:
     engine, TestingSessionLocal = create_db_engine_and_session(DatabaseEnv.Test)
     Base.metadata.create_all(bind=engine)
 
@@ -19,7 +21,7 @@ def test_engine_and_db():
 
 
 @pytest.fixture(scope="module")
-def test_client(test_engine_and_db):
+def test_client(test_engine_and_db: tuple[Engine, sessionmaker]):
     engine, TestingSessionLocal = test_engine_and_db
     Base.metadata.create_all(bind=engine)
 
@@ -38,7 +40,9 @@ def test_client(test_engine_and_db):
 
 
 @pytest.fixture(scope="module")
-def get_authed_user_1_headers(test_engine_and_db, test_client):
+def get_authed_user_1_headers(
+    test_engine_and_db: tuple[Engine, sessionmaker], test_client: TestClient
+):
     # region Setup
     engine, _ = test_engine_and_db
 
@@ -71,7 +75,9 @@ def get_authed_user_1_headers(test_engine_and_db, test_client):
 
 
 @pytest.fixture(scope="module")
-def get_authed_user_2_headers(test_engine_and_db, test_client):
+def get_authed_user_2_headers(
+    test_engine_and_db: tuple[Engine, sessionmaker], test_client: TestClient
+):
     # region Setup
     engine, _ = test_engine_and_db
 
