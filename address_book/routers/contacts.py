@@ -12,12 +12,12 @@ router = APIRouter(
 
 
 @router.post("/", response_model=schemas.Contact)
-def create_contact(user: schemas.ContactCreate, db: GetDb, current_user: GetUser):
-    address_book = crud.get_address_book(db, user.address_book_id, cast(int, current_user.id))
+def create_contact(contact: schemas.ContactCreate, db: GetDb, current_user: GetUser):
+    address_book = crud.get_address_book(db, contact.address_book_id, cast(int, current_user.id))
     if address_book is None:
         raise HTTPException(status_code=404, detail="Address book not found")
     
-    output = crud.create_contact(db, user)
+    output = crud.create_contact(db, contact)
     return output
 
 
