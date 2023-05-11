@@ -23,14 +23,14 @@ def create_contact(contact: schemas.ContactCreate, db: GetDb, current_user: GetU
     return output
 
 
-@router.get("/", response_model=List[schemas.ContactBase])
+@router.get("/", response_model=list[schemas.ContactBase])
 def read_contacts(db: GetDb, current_user: GetUser, unique: bool = False):
     db_address_books = crud.get_address_books(db, cast(int, current_user.id))
 
-    output: List[schemas.ContactBase] = []
+    output: list[schemas.ContactBase] = []
 
     if unique:
-        unique_data_set: Set[Tuple[str, str]] = set()
+        unique_data_set: set[tuple[str, str]] = set()
         for address_book in db_address_books:
             db_contacts = crud.get_contacts_by_address_book_id(
                 db, cast(int, address_book.id)

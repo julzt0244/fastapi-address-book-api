@@ -37,7 +37,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int = Field(..., ge=1)
-    address_books: List[Any]
+    address_books: list[Any]
 
 
 # endregion
@@ -69,7 +69,7 @@ class AddressBookDelete(AddressBookBase):
 
 class AddressBook(AddressBookBase):
     id: int = Field(..., ge=1)
-    contacts: List[Any]
+    contacts: list[Any]
 
 
 # endregion

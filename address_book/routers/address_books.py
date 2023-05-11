@@ -27,7 +27,7 @@ def create_address_book(
     return crud.create_address_book(db, address_book, current_user_id)
 
 
-@router.get("/", response_model=List[schemas.AddressBook])
+@router.get("/", response_model=list[schemas.AddressBook])
 def read_address_books(db: GetDb, current_user: GetUser):
     current_user_id = cast(int, current_user.id)
     return crud.get_address_books(db, current_user_id)

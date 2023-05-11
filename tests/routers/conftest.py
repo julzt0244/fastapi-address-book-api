@@ -62,7 +62,7 @@ def get_authed_user_1_headers(test_engine_and_db, test_client):
 
     # endregion
 
-    header: Dict[str, str] = {"Authorization": "Bearer " + data["access_token"]}
+    header: dict[str, str] = {"Authorization": "Bearer " + data["access_token"]}
     yield header
 
     # region Teardown
@@ -95,7 +95,7 @@ def get_authed_user_2_headers(test_engine_and_db, test_client):
 
     # endregion
 
-    header: Dict[str, str] = {"Authorization": "Bearer " + data["access_token"]}
+    header: dict[str, str] = {"Authorization": "Bearer " + data["access_token"]}
     yield header
 
     # region Teardown

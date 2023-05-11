@@ -58,7 +58,7 @@ def get_address_book_by_name(
     )
 
 
-def get_address_books(db: Session, user_id: int) -> List[models.AddressBook]:
+def get_address_books(db: Session, user_id: int) -> list[models.AddressBook]:
     return (
         db.query(models.AddressBook).filter(models.AddressBook.user_id == user_id).all()
     )

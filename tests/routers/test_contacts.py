@@ -161,7 +161,7 @@ class TestContacts:
             data={"username": "hellohello", "password": "hellohello"},
         )
         assert response_login.status_code == 200
-        headers_second_user: Dict[str, str] = {
+        headers_second_user: dict[str, str] = {
             "Authorization": "Bearer " + response_login.json()["access_token"]
         }
         os.environ["TEST_ACCESS_TOKEN_2"] = json.dumps(headers_second_user)

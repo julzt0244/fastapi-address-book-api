@@ -51,7 +51,7 @@ def get_password_hash(password: str) -> str:
 
 
 def create_access_token(
-    data: Dict[Any, Any], expires_delta: Optional[timedelta] = None
+    data: dict[Any, Any], expires_delta: Optional[timedelta] = None
 ):
     to_encode = data.copy()
     if expires_delta:
