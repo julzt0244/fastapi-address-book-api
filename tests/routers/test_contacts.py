@@ -1,6 +1,8 @@
 import json
 import os
 
+from fastapi.testclient import TestClient
+
 
 class TestContacts:
     test_address_book_name_1 = "Work Profile"
@@ -11,7 +13,7 @@ class TestContacts:
     test_contact_phone_number: str = "0412341234"
 
     def test_create_contact_authed_user_should_pass(
-        self, test_client, get_authed_user_1_headers
+        self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response_create_address_book = test_client.post(
             "/address-books/",
@@ -39,7 +41,7 @@ class TestContacts:
         }
 
     def test_create_contact_authed_user_for_other_users_should_fail(
-        self, test_client, get_authed_user_2_headers
+        self, test_client: TestClient, get_authed_user_2_headers: dict[str, str]
     ):
         """
         Check that a user can only create contacts in their own address books
@@ -55,7 +57,7 @@ class TestContacts:
         )
         assert response_create_contact.status_code == 404
 
-    def test_create_contact_unknown_user_should_fail(self, test_client):
+    def test_create_contact_unknown_user_should_fail(self, test_client: TestClient):
         response = test_client.post(
             "/contacts/",
             json={
@@ -68,7 +70,7 @@ class TestContacts:
         assert response.status_code == 401
 
     def test_read_contacts_authed_user_should_pass_all(
-        self, test_client, get_authed_user_1_headers
+        self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         # SETUP
         # Create second address book
@@ -109,7 +111,7 @@ class TestContacts:
         ]
 
     def test_read_contacts_authed_user_should_pass_unique(
-        self, test_client, get_authed_user_1_headers
+        self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.get(
             "/contacts/?unique=true",
@@ -124,7 +126,7 @@ class TestContacts:
         ]
 
     def test_read_contact_valid_details_should_pass(
-        self, test_client, get_authed_user_1_headers
+        self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.get(
             "/contacts/1/",
@@ -139,7 +141,7 @@ class TestContacts:
         }
 
     def test_read_contact_invalid_details_should_fail(
-        self, test_client, get_authed_user_1_headers
+        self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.get(
             "/contacts/999/",
@@ -173,7 +175,7 @@ class TestContacts:
         assert response.status_code == 403
 
     def test_delete_contact_valid_details_should_pass(
-        self, test_client, get_authed_user_1_headers
+        self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.delete(
             "/contacts/1",
@@ -183,7 +185,7 @@ class TestContacts:
         assert response.content.decode() == ""
 
     def test_delete_contact_invalid_details_should_fail(
-        self, test_client, get_authed_user_1_headers
+        self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.delete(
             "/contacts/999",

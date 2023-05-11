@@ -1,8 +1,11 @@
+from fastapi.testclient import TestClient
+
+
 class TestAccount:
     test_address_book_name = "Test AddressBook"
 
     def test_create_address_book_valid_details_should_pass(
-        self, test_client, get_authed_user_1_headers
+        self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.post(
             "/address-books/",
@@ -17,7 +20,7 @@ class TestAccount:
         }
 
     def test_create_address_book_duplicate_name_should_fail(
-        self, test_client, get_authed_user_1_headers
+        self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.post(
             "/address-books/",
@@ -27,7 +30,7 @@ class TestAccount:
         assert response.status_code == 409
 
     def test_read_address_books_authed_user_should_pass(
-        self, test_client, get_authed_user_1_headers
+        self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.get(
             "/address-books/",
@@ -38,7 +41,7 @@ class TestAccount:
             {"name": self.test_address_book_name, "id": 1, "contacts": []},
         ]
 
-    def test_read_address_books_unknown_user_should_fail(self, test_client):
+    def test_read_address_books_unknown_user_should_fail(self, test_client: TestClient):
         response = test_client.get(
             "/address-books/",
             headers={},
@@ -46,7 +49,7 @@ class TestAccount:
         assert response.status_code == 401
 
     def test_read_address_book_valid_details_should_pass(
-        self, test_client, get_authed_user_1_headers
+        self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.get(
             "/address-books/1",
@@ -60,7 +63,7 @@ class TestAccount:
         }
 
     def test_read_address_book_invalid_id_should_fail(
-        self, test_client, get_authed_user_1_headers
+        self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.get(
             "/address-books/9999",
@@ -68,7 +71,7 @@ class TestAccount:
         )
         assert response.status_code == 404
 
-    def test_read_address_book_unknown_user_should_fail(self, test_client):
+    def test_read_address_book_unknown_user_should_fail(self, test_client: TestClient):
         response = test_client.get(
             "/address-books/1",
             headers={},
