@@ -17,7 +17,7 @@ try:
         SECRET_KEY = file.read()
 except Exception:
     print(
-        """No SECRET_KEY.txt file found. Generating a new one in the root directory"""
+        """No SECRET_KEY.txt file found. Generating a new one in the project's root directory"""
     )
     with open("SECRET_KEY.txt", "w") as file:
         SECRET_KEY = b64encode(token_bytes(32)).decode()  # type: ignore
