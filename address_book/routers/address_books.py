@@ -1,4 +1,4 @@
-from typing import List, cast
+from typing import cast
 
 from fastapi import APIRouter, HTTPException, status
 

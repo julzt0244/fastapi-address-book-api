@@ -1,7 +1,4 @@
-from typing import Optional
-
 from fastapi import FastAPI
-from pydantic import BaseModel
 from starlette.responses import RedirectResponse
 
 from address_book import crud, database, models, schemas

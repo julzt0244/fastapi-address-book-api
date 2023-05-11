@@ -1,7 +1,7 @@
 from base64 import b64encode
 from datetime import datetime, timedelta
 from secrets import token_bytes
-from typing import Any, Dict, Optional, cast
+from typing import Any, Optional, cast
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer

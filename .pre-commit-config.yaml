@@ -1,4 +1,11 @@
 repos:
+  - repo: https://github.com/pycqa/autoflake
+    rev: v2.0.2
+    hooks:
+      - id: autoflake
+        description: remove unused python imports
+        args: ["--in-place", "--remove-all-unused-imports"]
+
   - repo: https://github.com/psf/black
     rev: 23.3.0
     hooks:
