@@ -1,9 +1,9 @@
 from typing import List, cast
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException, status
 
-from address_book import auth, crud, database, models, schemas
+from address_book import crud, schemas
+from address_book.routers.shared_dependencies import GetDb, GetUser
 
 router = APIRouter(
     prefix="/address-books",
@@ -12,7 +12,7 @@ router = APIRouter(
 
 
 @router.post("/", response_model=schemas.AddressBook)
-def create_address_book(address_book: schemas.AddressBookCreate, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+def create_address_book(address_book: schemas.AddressBookCreate, db: GetDb, current_user: GetUser):
     current_user_id = cast(int, current_user.id)
 
     db_address_book = crud.get_address_book_by_name(db, address_book.name, current_user_id)
@@ -22,13 +22,13 @@ def create_address_book(address_book: schemas.AddressBookCreate, db: Session = D
 
 
 @router.get("/", response_model=List[schemas.AddressBook])
-def read_address_books(db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+def read_address_books(db: GetDb, current_user: GetUser):
     current_user_id = cast(int, current_user.id)
     return crud.get_address_books(db, current_user_id)
 
 
 @router.get("/{address_book_id}", response_model=schemas.AddressBook)
-def read_address_book(address_book_id: int, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+def read_address_book(address_book_id: int, db: GetDb, current_user: GetUser):
     current_user_id = cast(int, current_user.id)
     address_book = crud.get_address_book(db, address_book_id, current_user_id)
     if address_book is None:
@@ -37,7 +37,7 @@ def read_address_book(address_book_id: int, db: Session = Depends(database.get_d
 
 
 @router.put("/{address_book_id}", status_code=status.HTTP_204_NO_CONTENT)
-def update_address_book(address_book_id: int, address_book: schemas.AddressBookUpdate, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+def update_address_book(address_book_id: int, address_book: schemas.AddressBookUpdate, db: GetDb, current_user: GetUser):
     current_user_id = cast(int, current_user.id)
     db_address_book = crud.update_address_book(db, address_book_id, current_user_id, address_book.name)
     if db_address_book is None:
@@ -46,10 +46,12 @@ def update_address_book(address_book_id: int, address_book: schemas.AddressBookU
 
 
 @router.delete("/{address_book_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_address_book(address_book_id: int, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+def delete_address_book(address_book_id: int, db: GetDb, current_user: GetUser):
     current_user_id = cast(int, current_user.id)
     address_book = crud.delete_address_book(db, address_book_id, current_user_id)
     if address_book:
         return
     else:
         raise HTTPException(status_code=404, detail="AddressBook not found")
+
+
