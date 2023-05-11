@@ -22,7 +22,7 @@ def create_contact(user: schemas.ContactCreate, db: GetDb, current_user: GetUser
 
 
 @router.get("/", response_model=List[schemas.ContactBase])
-def read_contacts(unique: bool = False, db: GetDb, current_user: GetUser):
+def read_contacts(db: GetDb, current_user: GetUser, unique: bool = False):
     db_address_books = crud.get_address_books(db, cast(int, current_user.id))
 
     output: List[schemas.ContactBase] = []
