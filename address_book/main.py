@@ -8,7 +8,6 @@ from address_book import crud, database, models, schemas
 from address_book.database import SessionLocal
 from address_book.routers import account, address_books, contacts
 
-
 description = """
 Please click the above link to download the OpenAPI schema.
 

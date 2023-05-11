@@ -1,6 +1,6 @@
 from typing import Callable
 
-from fastapi import Request, Response, HTTPException
+from fastapi import HTTPException, Request, Response
 from fastapi.routing import APIRoute
 
 from address_book.exceptions import MyCustomException

@@ -5,8 +5,6 @@ from sqlalchemy.orm import Session
 from address_book import models, schemas
 from address_book.auth import get_password_hash
 
-
-
 # region User
 
 def get_user(db: Session, username: str) -> Optional[models.User]:

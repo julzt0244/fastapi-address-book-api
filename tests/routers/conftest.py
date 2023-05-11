@@ -3,7 +3,12 @@ from typing import Dict
 import pytest
 from fastapi.testclient import TestClient
 
-from address_book.database import Base, DatabaseEnv, create_db_engine_and_session, get_db
+from address_book.database import (
+    Base,
+    DatabaseEnv,
+    create_db_engine_and_session,
+    get_db,
+)
 from address_book.main import app
 
 
