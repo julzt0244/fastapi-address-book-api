@@ -12,6 +12,8 @@ API features implemented:
 - Users are able to maintain multiple address books
 - Users are able to print out a unique set of all contacts across multiple address books
 
+Each authenticated user is only permitted to only perform actions on contacts/address books that they own/created.
+
 ## API Documentation/Usage
 The documentation is located at "/docs". The root path will also redirect to this endpoint. 
 
