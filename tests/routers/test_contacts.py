@@ -12,12 +12,12 @@ class TestContacts:
     test_contact_name: str = "Peter Smith"
     test_contact_phone_number: str = "0412341234"
 
-    def test_create_contact_authed_user_should_pass(self, test_client, get_authed_user_headers):
+    def test_create_contact_authed_user_should_pass(self, test_client, get_authed_user_1_headers):
 
         response_create_address_book = test_client.post(
             "/address-books/",
             json={"name": self.test_address_book_name_1},
-            headers=get_authed_user_headers,
+            headers=get_authed_user_1_headers,
         )
         assert response_create_address_book.status_code == 200
         response_create_address_book.json()
@@ -25,7 +25,7 @@ class TestContacts:
         response_create_contact = test_client.post(
             "/contacts/",
             json={"name": self.test_contact_name, "phoneNumber": self.test_contact_phone_number, "addressBookId": self.test_address_book_id_1},
-            headers=get_authed_user_headers,
+            headers=get_authed_user_1_headers,
         )
         assert response_create_contact.status_code == 200
         assert response_create_contact.json() == {
@@ -34,6 +34,17 @@ class TestContacts:
             "id": 1,
             "addressBookId": self.test_address_book_id_1,
         }
+
+    def test_create_contact_authed_user_for_other_users_should_fail(self, test_client, get_authed_user_2_headers):
+        """
+        Check that a user can only create contacts in their own address books
+        """
+        response_create_contact = test_client.post(
+            "/contacts/",
+            json={"name": self.test_contact_name, "phoneNumber": self.test_contact_phone_number, "addressBookId": self.test_address_book_id_1},
+            headers=get_authed_user_2_headers,
+        )
+        assert response_create_contact.status_code == 404
 
     def test_create_contact_unknown_user_should_fail(self, test_client):
 
@@ -44,14 +55,14 @@ class TestContacts:
         )
         assert response.status_code == 401
 
-    def test_read_contacts_authed_user_should_pass_all(self, test_client, get_authed_user_headers):
+    def test_read_contacts_authed_user_should_pass_all(self, test_client, get_authed_user_1_headers):
 
         # SETUP
         # Create second address book
         response_create_address_book = test_client.post(
             "/address-books/",
             json={"name": self.test_address_book_name_2},
-            headers=get_authed_user_headers,
+            headers=get_authed_user_1_headers,
         )
         assert response_create_address_book.status_code == 200
 
@@ -59,14 +70,14 @@ class TestContacts:
         response_create_contact = test_client.post(
             "/contacts/",
             json={"name": self.test_contact_name, "phoneNumber": self.test_contact_phone_number, "addressBookId": self.test_address_book_id_2},
-            headers=get_authed_user_headers,
+            headers=get_authed_user_1_headers,
         )
         assert response_create_contact.status_code == 200
 
         # TEST
         response_get_contacts = test_client.get(
             "/contacts/",
-            headers=get_authed_user_headers,
+            headers=get_authed_user_1_headers,
         )
         assert response_get_contacts.status_code == 200
         assert response_get_contacts.json() == [
@@ -74,22 +85,22 @@ class TestContacts:
             {"name": self.test_contact_name, "phoneNumber": self.test_contact_phone_number},
         ]
 
-    def test_read_contacts_authed_user_should_pass_unique(self, test_client, get_authed_user_headers):
+    def test_read_contacts_authed_user_should_pass_unique(self, test_client, get_authed_user_1_headers):
 
         response = test_client.get(
             "/contacts/?unique=true",
-            headers=get_authed_user_headers,
+            headers=get_authed_user_1_headers,
         )
         assert response.status_code == 200
         assert response.json() == [
             {"name": self.test_contact_name, "phoneNumber": self.test_contact_phone_number},
         ]
 
-    def test_read_contact_valid_details_should_pass(self, test_client, get_authed_user_headers):
+    def test_read_contact_valid_details_should_pass(self, test_client, get_authed_user_1_headers):
 
         response = test_client.get(
             "/contacts/1/",
-            headers=get_authed_user_headers,
+            headers=get_authed_user_1_headers,
         )
         assert response.status_code == 200
         assert response.json() == {
@@ -99,11 +110,11 @@ class TestContacts:
             "addressBookId": self.test_address_book_id_1,
         }
 
-    def test_read_contact_invalid_details_should_fail(self, test_client, get_authed_user_headers):
+    def test_read_contact_invalid_details_should_fail(self, test_client, get_authed_user_1_headers):
 
         response = test_client.get(
             "/contacts/999/",
-            headers=get_authed_user_headers,
+            headers=get_authed_user_1_headers,
         )
         assert response.status_code == 404
 
@@ -131,20 +142,20 @@ class TestContacts:
         )
         assert response.status_code == 403
 
-    def test_delete_contact_valid_details_should_pass(self, test_client, get_authed_user_headers):
+    def test_delete_contact_valid_details_should_pass(self, test_client, get_authed_user_1_headers):
 
         response = test_client.delete(
             "/contacts/1",
-            headers=get_authed_user_headers,
+            headers=get_authed_user_1_headers,
         )
         assert response.status_code == 204
         assert response.content.decode() == ""
 
-    def test_delete_contact_invalid_details_should_fail(self, test_client, get_authed_user_headers):
+    def test_delete_contact_invalid_details_should_fail(self, test_client, get_authed_user_1_headers):
 
         response = test_client.delete(
             "/contacts/999",
-            headers=get_authed_user_headers,
+            headers=get_authed_user_1_headers,
         )
         assert response.status_code == 404
 
