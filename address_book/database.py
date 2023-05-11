@@ -19,7 +19,8 @@ def create_db_engine_and_session(database_mode: DatabaseEnv = DatabaseEnv.Prod):
     SQLALCHEMY_DATABASE_URL = f"sqlite:///./{db_name}.db"
 
     engine = create_engine(
-        SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False},
+        SQLALCHEMY_DATABASE_URL,
+        connect_args={"check_same_thread": False},
     )
     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

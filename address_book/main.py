@@ -52,7 +52,9 @@ def create_default_user_if_none_exists():
     db = SessionLocal()
     result = crud.get_user(db, default_username)
     if result is None:
-        crud.create_user(db, schemas.UserCreate(username=default_username, password=default_password))
+        crud.create_user(
+            db, schemas.UserCreate(username=default_username, password=default_password)
+        )
 
 
 @app.get("/", tags=["Other"])

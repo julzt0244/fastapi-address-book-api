@@ -1,4 +1,2 @@
-
-
 class MyCustomException(Exception):
     pass

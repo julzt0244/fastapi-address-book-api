@@ -9,9 +9,7 @@ from address_book.exception_handler import RouteErrorHandler
 from address_book.routers.shared_dependencies import GetDb, GetUser
 
 router = APIRouter(
-    prefix="/account",
-    tags=["Account Operations"],
-    route_class=RouteErrorHandler
+    prefix="/account", tags=["Account Operations"], route_class=RouteErrorHandler
 )
 
 
@@ -39,7 +37,8 @@ def login_user(db: GetDb, form_data: OAuth2PasswordRequestForm = Depends()):
         )
     access_token_expires = timedelta(days=auth.ACCESS_TOKEN_EXPIRE_DAYS)
     access_token = auth.create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires,
+        data={"sub": user.username},
+        expires_delta=access_token_expires,
     )
     return {"access_token": access_token, "token_type": "bearer"}
 

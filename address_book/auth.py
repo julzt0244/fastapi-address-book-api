@@ -16,7 +16,9 @@ try:
     with open("SECRET_KEY.txt") as file:
         SECRET_KEY = file.read()
 except Exception:
-    print("""No SECRET_KEY.txt file found. Generating a new one in the root directory""")
+    print(
+        """No SECRET_KEY.txt file found. Generating a new one in the root directory"""
+    )
     with open("SECRET_KEY.txt", "w") as file:
         SECRET_KEY = b64encode(token_bytes(32)).decode()  # type: ignore
         file.write(SECRET_KEY)
@@ -48,7 +50,9 @@ def get_password_hash(password: str) -> str:
     return cast(str, pwd_context.hash(password))
 
 
-def create_access_token(data: Dict[Any, Any], expires_delta: Optional[timedelta] = None):
+def create_access_token(
+    data: Dict[Any, Any], expires_delta: Optional[timedelta] = None
+):
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
@@ -59,7 +63,9 @@ def create_access_token(data: Dict[Any, Any], expires_delta: Optional[timedelta]
     return encoded_jwt
 
 
-def get_current_user(db: Session = Depends(database.get_db), token: str = Depends(oauth2_scheme)) -> models.User:
+def get_current_user(
+    db: Session = Depends(database.get_db), token: str = Depends(oauth2_scheme)
+) -> models.User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

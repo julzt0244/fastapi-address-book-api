@@ -31,6 +31,8 @@ class Contact(Base):
     id = Column("ContactID", Integer, primary_key=True)
     name = Column("Name", String)
     phone_number = Column("PhoneNumber", String)
-    address_book_id = Column("AddressBookID", Integer, ForeignKey("AddressBook.AddressBookID"))
+    address_book_id = Column(
+        "AddressBookID", Integer, ForeignKey("AddressBook.AddressBookID")
+    )
 
     address_book = relationship("AddressBook", back_populates="contacts")

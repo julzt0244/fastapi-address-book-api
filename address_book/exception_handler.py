@@ -8,6 +8,7 @@ from address_book.exceptions import MyCustomException
 
 class RouteErrorHandler(APIRoute):
     """Custom APIRoute that handles application errors and exceptions"""
+
     # Source - https://stackoverflow.com/a/69720977/7032304
 
     def get_route_handler(self) -> Callable:

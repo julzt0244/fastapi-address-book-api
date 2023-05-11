@@ -13,10 +13,12 @@ router = APIRouter(
 
 @router.post("/", response_model=schemas.Contact)
 def create_contact(contact: schemas.ContactCreate, db: GetDb, current_user: GetUser):
-    address_book = crud.get_address_book(db, contact.address_book_id, cast(int, current_user.id))
+    address_book = crud.get_address_book(
+        db, contact.address_book_id, cast(int, current_user.id)
+    )
     if address_book is None:
         raise HTTPException(status_code=404, detail="Address book not found")
-    
+
     output = crud.create_contact(db, contact)
     return output
 
@@ -30,8 +32,12 @@ def read_contacts(db: GetDb, current_user: GetUser, unique: bool = False):
     if unique:
         unique_data_set: Set[Tuple[str, str]] = set()
         for address_book in db_address_books:
-            db_contacts = crud.get_contacts_by_address_book_id(db, cast(int, address_book.id))
-            name_and_phone_numbers_only = [(i.name, i.phone_number) for i in db_contacts]
+            db_contacts = crud.get_contacts_by_address_book_id(
+                db, cast(int, address_book.id)
+            )
+            name_and_phone_numbers_only = [
+                (i.name, i.phone_number) for i in db_contacts
+            ]
 
             for val in name_and_phone_numbers_only:
                 unique_data_set.add(val)
@@ -41,7 +47,9 @@ def read_contacts(db: GetDb, current_user: GetUser, unique: bool = False):
 
     else:
         for address_book in db_address_books:
-            db_contacts = crud.get_contacts_by_address_book_id(db, cast(int, address_book.id))
+            db_contacts = crud.get_contacts_by_address_book_id(
+                db, cast(int, address_book.id)
+            )
             output.extend(db_contacts)
 
     return output
@@ -53,7 +61,9 @@ def read_contact(contact_id: int, db: GetDb, current_user: GetUser):
     if db_contact is None:
         raise HTTPException(status_code=404, detail="Contact not found")
     if current_user != db_contact.address_book.user:
-        raise HTTPException(status_code=403, detail="You do not have access to that Contact")
+        raise HTTPException(
+            status_code=403, detail="You do not have access to that Contact"
+        )
     return db_contact
 
 
@@ -63,6 +73,8 @@ def delete_contact(contact_id: int, db: GetDb, current_user: GetUser):
     if db_contact is None:
         raise HTTPException(status_code=404, detail="Contact not found")
     if current_user != db_contact.address_book.user:
-        raise HTTPException(status_code=403, detail="You do not have access to that Contact")
+        raise HTTPException(
+            status_code=403, detail="You do not have access to that Contact"
+        )
     crud.delete_contact(db, contact_id)
     return

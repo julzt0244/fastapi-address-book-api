@@ -15,10 +15,12 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     username: Optional[str] = None
 
+
 # endregion
 
 
 # region User
+
 
 class UserBase(BaseModel):
     username: str = Field(..., example="newuser")
@@ -37,10 +39,12 @@ class User(UserBase):
     id: int = Field(..., ge=1)
     address_books: List[Any]
 
+
 # endregion
 
 
 # region AddressBook
+
 
 class AddressBookBase(BaseModel):
     name: str = Field(..., example="Default Profile")
@@ -67,10 +71,12 @@ class AddressBook(AddressBookBase):
     id: int = Field(..., ge=1)
     contacts: List[Any]
 
+
 # endregion
 
 
 # region Contact
+
 
 class ContactBase(BaseModel):
     name: str
@@ -89,5 +95,6 @@ class ContactCreate(ContactBase):
 class Contact(ContactBase):
     id: int = Field(..., ge=1)
     address_book_id: int
+
 
 # endregion
