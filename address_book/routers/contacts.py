@@ -1,9 +1,9 @@
 from typing import List, Set, Tuple, cast
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, HTTPException, status
 
-from address_book import auth, crud, database, models, schemas
+from address_book import crud, schemas
+from address_book.routers.shared_dependencies import GetDb, GetUser
 
 router = APIRouter(
     prefix="/contacts",
@@ -12,7 +12,7 @@ router = APIRouter(
 
 
 @router.post("/", response_model=schemas.Contact)
-def create_contact(user: schemas.ContactCreate, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+def create_contact(user: schemas.ContactCreate, db: GetDb, current_user: GetUser):
     address_book = crud.get_address_book(db, user.address_book_id, cast(int, current_user.id))
     if address_book is None:
         raise HTTPException(status_code=404, detail="Address book not found")
@@ -22,7 +22,7 @@ def create_contact(user: schemas.ContactCreate, db: Session = Depends(database.g
 
 
 @router.get("/", response_model=List[schemas.ContactBase])
-def read_contacts(unique: bool = False, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+def read_contacts(unique: bool = False, db: GetDb, current_user: GetUser):
     db_address_books = crud.get_address_books(db, cast(int, current_user.id))
 
     output: List[schemas.ContactBase] = []
@@ -48,7 +48,7 @@ def read_contacts(unique: bool = False, db: Session = Depends(database.get_db), 
 
 
 @router.get("/{contact_id}", response_model=schemas.Contact)
-def read_contact(contact_id: int, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+def read_contact(contact_id: int, db: GetDb, current_user: GetUser):
     db_contact = crud.get_contact(db, contact_id)
     if db_contact is None:
         raise HTTPException(status_code=404, detail="Contact not found")
@@ -58,7 +58,7 @@ def read_contact(contact_id: int, db: Session = Depends(database.get_db), curren
 
 
 @router.delete("/{contact_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_contact(contact_id: int, db: Session = Depends(database.get_db), current_user: models.User = Depends(auth.get_current_user)):
+def delete_contact(contact_id: int, db: GetDb, current_user: GetUser):
     db_contact = crud.get_contact(db, contact_id)
     if db_contact is None:
         raise HTTPException(status_code=404, detail="Contact not found")
