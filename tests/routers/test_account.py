@@ -1,7 +1,11 @@
 import json
 import os
+from datetime import timedelta
 
 from fastapi.testclient import TestClient
+from freezegun import freeze_time
+
+from address_book.auth import ACCESS_TOKEN_EXPIRE_DAYS
 
 
 class TestAccount:
@@ -59,6 +63,26 @@ class TestAccount:
     ):
         response = test_client.get("/account")
         assert response.status_code == 401
+
+    def test_cannot_get_account_info_if_access_token_expired(
+        self, test_client: TestClient
+    ):
+        with freeze_time() as frozen_datetime:
+            # Sometime in the past the user has received the token
+            response = test_client.post(
+                "/account/session/",
+                data={"username": self.test_username, "password": self.test_password},
+            )
+            assert response.status_code == 200
+            data = response.json()
+
+            frozen_datetime.tick(timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS + 1))
+
+            response = test_client.get(
+                "/account/",
+                headers={"Authorization": "Bearer " + data["access_token"]},
+            )
+            assert response.status_code == 401
 
     def test_can_delete_own_account(self, test_client: TestClient):
         response = test_client.delete(
