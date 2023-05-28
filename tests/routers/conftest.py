@@ -73,12 +73,6 @@ def get_authed_user_1_headers(
     header: dict[str, str] = {"Authorization": "Bearer " + data["access_token"]}
     yield header
 
-    # region Teardown
-
-    Base.metadata.drop_all(bind=engine)
-
-    # endregion
-
 
 @pytest.fixture(scope="module")
 def get_authed_user_2_headers(
@@ -107,9 +101,3 @@ def get_authed_user_2_headers(
 
     header: dict[str, str] = {"Authorization": "Bearer " + data["access_token"]}
     yield header
-
-    # region Teardown
-
-    Base.metadata.drop_all(bind=engine)
-
-    # endregion
