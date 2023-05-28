@@ -6,7 +6,7 @@ authors = ["Julian Tan <julian.tanz@yahoo.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-fastapi = "^0.95.1"
+fastapi = "^0.95.2"
 uvicorn = "^0.22.0"
 python-multipart = "^0.0.6"
 pyhumps = "^3.8.0"
