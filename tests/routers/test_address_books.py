@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 
 
-class TestAccount:
+class TestAddressBook:
     test_address_book_name = "Test AddressBook"
 
     def test_create_address_book_valid_details_should_pass(
