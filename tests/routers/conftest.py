@@ -36,7 +36,13 @@ def test_client(test_engine_and_db: tuple[Engine, sessionmaker]):
 
     app.dependency_overrides[get_db] = override_get_db
 
-    return client
+    yield client
+
+    # region Teardown
+
+    Base.metadata.drop_all(bind=engine)
+
+    # endregion
 
 
 @pytest.fixture(scope="module")
