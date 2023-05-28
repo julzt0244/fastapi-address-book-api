@@ -12,7 +12,7 @@ class TestContacts:
     test_contact_name: str = "Peter Smith"
     test_contact_phone_number: str = "0412341234"
 
-    def test_create_contact_authed_user_should_pass(
+    def test_can_create_contact(
         self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response_create_address_book = test_client.post(
@@ -40,7 +40,7 @@ class TestContacts:
             "addressBookId": self.test_address_book_id_1,
         }
 
-    def test_create_contact_authed_user_for_other_users_should_fail(
+    def test_cannot_create_contact_for_other_users_address_book(
         self, test_client: TestClient, get_authed_user_2_headers: dict[str, str]
     ):
         """
@@ -57,7 +57,7 @@ class TestContacts:
         )
         assert response_create_contact.status_code == 404
 
-    def test_create_contact_unknown_user_should_fail(self, test_client: TestClient):
+    def test_cannot_create_contact_if_not_authenticated(self, test_client: TestClient):
         response = test_client.post(
             "/contacts/",
             json={
@@ -69,7 +69,7 @@ class TestContacts:
         )
         assert response.status_code == 401
 
-    def test_read_contacts_authed_user_should_pass_all(
+    def test_can_get_combined_list_of_contacts(
         self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         # SETUP
@@ -110,7 +110,7 @@ class TestContacts:
             },
         ]
 
-    def test_read_contacts_authed_user_should_pass_unique(
+    def test_can_get_unique_list_of_contacts(
         self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.get(
@@ -125,7 +125,7 @@ class TestContacts:
             },
         ]
 
-    def test_read_contact_valid_details_should_pass(
+    def test_can_read_contact_details(
         self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.get(
@@ -140,7 +140,7 @@ class TestContacts:
             "addressBookId": self.test_address_book_id_1,
         }
 
-    def test_read_contact_invalid_details_should_fail(
+    def test_with_non_existant_contact(
         self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.get(
@@ -149,7 +149,7 @@ class TestContacts:
         )
         assert response.status_code == 404
 
-    def test_read_contact_users_should_only_access_own_contacts(self, test_client):
+    def test_cannot_access_other_users_contacts(self, test_client):
         # SETUP
         # Create second authed user
         response_create_account = test_client.post(
@@ -174,7 +174,7 @@ class TestContacts:
         )
         assert response.status_code == 403
 
-    def test_delete_contact_valid_details_should_pass(
+    def test_can_delete_own_contacts(
         self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.delete(
@@ -184,7 +184,7 @@ class TestContacts:
         assert response.status_code == 204
         assert response.content.decode() == ""
 
-    def test_delete_contact_invalid_details_should_fail(
+    def test_when_deleting_non_existant_contact(
         self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.delete(
@@ -193,7 +193,7 @@ class TestContacts:
         )
         assert response.status_code == 404
 
-    def test_delete_contact_users_should_only_delete_own_contacts(self, test_client):
+    def test_cannot_delete_other_users_contacts(self, test_client):
         response = test_client.delete(
             "/contacts/2",
             headers=json.loads(os.environ["TEST_ACCESS_TOKEN_2"]),
