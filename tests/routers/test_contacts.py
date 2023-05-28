@@ -140,7 +140,7 @@ class TestContacts:
             "addressBookId": self.test_address_book_id_1,
         }
 
-    def test_with_non_existant_contact(
+    def test_with_non_existent_contact(
         self, test_client: TestClient, get_authed_user_1_headers: dict[str, str]
     ):
         response = test_client.get(
