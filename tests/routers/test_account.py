@@ -68,7 +68,6 @@ class TestAccount:
         self, test_client: TestClient
     ):
         with freeze_time() as frozen_datetime:
-            # Sometime in the past the user has received the token
             response = test_client.post(
                 "/account/session/",
                 data={"username": self.test_username, "password": self.test_password},
